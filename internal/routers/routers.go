@@ -2,10 +2,6 @@ package routers
 
 import (
 	"encoding/json"
-	"github.com/ouqiang/gocron/internal/models"
-	"github.com/ouqiang/gocron/internal/routers/dashboard"
-	"github.com/ouqiang/gocron/internal/routers/process"
-	"github.com/ouqiang/gocron/internal/routers/project"
 	"io"
 	"log"
 	"net/http"
@@ -17,20 +13,23 @@ import (
 	"github.com/go-macaron/binding"
 	"github.com/go-macaron/gzip"
 	"github.com/go-macaron/toolbox"
+	"github.com/ouqiang/gocron/internal/models"
 	"github.com/ouqiang/gocron/internal/modules/app"
 	"github.com/ouqiang/gocron/internal/modules/logger"
 	"github.com/ouqiang/gocron/internal/modules/utils"
+	"github.com/ouqiang/gocron/internal/routers/dashboard"
 	"github.com/ouqiang/gocron/internal/routers/host"
 	"github.com/ouqiang/gocron/internal/routers/install"
 	"github.com/ouqiang/gocron/internal/routers/loginlog"
 	"github.com/ouqiang/gocron/internal/routers/manage"
+	"github.com/ouqiang/gocron/internal/routers/process"
+	"github.com/ouqiang/gocron/internal/routers/project"
 	"github.com/ouqiang/gocron/internal/routers/task"
 	"github.com/ouqiang/gocron/internal/routers/tasklog"
 	"github.com/ouqiang/gocron/internal/routers/user"
+	_ "github.com/ouqiang/gocron/internal/statik"
 	"github.com/rakyll/statik/fs"
 	"gopkg.in/macaron.v1"
-
-	_ "github.com/ouqiang/gocron/internal/statik"
 )
 
 const (
@@ -95,6 +94,7 @@ func Register(m *macaron.Macaron) {
 		m.Post("/log/clear", tasklog.Clear)
 		m.Post("/log/stop", tasklog.Stop)
 		m.Post("/remove/:id", task.Remove)
+		m.Post("/log/remove/day/:id", tasklog.RemoveDay)
 		m.Post("/enable/:id", task.Enable)
 		m.Post("/disable/:id", task.Disable)
 		m.Get("/run/:id", task.Run)
@@ -311,7 +311,7 @@ func urlAuth(ctx *macaron.Context) {
 	ctx.Write([]byte(data))
 }
 
-//操作日志中间键
+// 操作日志中间键
 func operateLogMiddleware(req *http.Request, ctx *macaron.Context) {
 	ctx.Next()
 	// 不记录GET请求的日志

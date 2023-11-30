@@ -1,7 +1,6 @@
 package models
 
 import (
-	"strconv"
 	"time"
 
 	"github.com/go-xorm/xorm"
@@ -64,27 +63,36 @@ func (taskLog *TaskLog) List(params CommonMap) ([]TaskLog, error) {
 
 // Clear 根据条件清空日志表
 func (taskLog *TaskLog) Clear(filter CommonMap) (int64, error) {
-	session := Db.Where("1=1")
-	taskId, ok := filter["taskId"]
-	if ok && taskId != "" {
-		session.Where("task_id = ?", taskId)
-	}
-	status, ok := filter["status"]
-	if ok && status != "" {
-		value, _ := strconv.Atoi(status.(string))
-		session.Where("status = ?", value-1)
-	}
-	protocol, ok := filter["protocol"]
-	if ok && protocol != "" {
-		session.Where("protocol = ?", protocol)
-	}
+	//session := Db.Where("1=1")
+	//taskId, ok := filter["taskId"]
+	//if ok && taskId != "" {
+	//	session.Where("task_id = ?", taskId)
+	//}
+	//status, ok := filter["status"]
+	//if ok && status != "" {
+	//	value, _ := strconv.Atoi(status.(string))
+	//	session.Where("status = ?", value-1)
+	//}
+	//protocol, ok := filter["protocol"]
+	//if ok && protocol != "" {
+	//	session.Where("protocol = ?", protocol)
+	//}
+	//
+	//return session.Delete(taskLog)
 
-	return session.Delete(taskLog)
+	_, err := Db.Exec("TRUNCATE TABLE " + taskLogTableName()[0])
+	return 1, err
 }
 
 // 删除N个月前的日志
 func (taskLog *TaskLog) Remove(id int) (int64, error) {
 	t := time.Now().AddDate(0, -id, 0)
+	return Db.Where("start_time <= ?", t.Format(DefaultTimeFormat)).Delete(taskLog)
+}
+
+// 删除N天前的日志
+func (taskLog *TaskLog) RemoveDay(id int) (int64, error) {
+	t := time.Now().AddDate(0, 0, -id)
 	return Db.Where("start_time <= ?", t.Format(DefaultTimeFormat)).Delete(taskLog)
 }
 
@@ -112,4 +120,8 @@ func (taskLog *TaskLog) parseWhere(session *xorm.Session, params CommonMap) {
 	if ok && status.(int) > -1 {
 		session.And("status = ?", status)
 	}
+}
+
+func taskLogTableName() []string {
+	return []string{TablePrefix + "task_log", "th"}
 }

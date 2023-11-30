@@ -37,13 +37,15 @@ const emailTemplate = `
 备注: {{.Remark}}
 `
 const webhookTemplate = `
-{
-  "task_id": "{{.TaskId}}",
-  "task_name": "{{.TaskName}}",
-  "status": "{{.Status}}",
-  "result": "{{.Result}}",
-  "remark": "{{.Remark}}"
-}
+{"msgtype": "markdown",
+   "markdown": {
+"content": "gocron任务执行结果通知：\n
+>任务ID: {{.TaskId}}，
+>任务名称: {{.TaskName}},
+>状态: {{.Status}},
+>结果: {{.Result}}, 
+>备注: {{.Remark}}"
+}}
 `
 
 const (
@@ -321,7 +323,7 @@ func (setting *Setting) LdapSettings() (LDAPSetting, error) {
 	bytes, _ := json.Marshal(res)
 	ldapSetting := LDAPSetting{}
 	_ = json.Unmarshal(bytes, &ldapSetting)
-	
+
 	return ldapSetting, err
 }
 

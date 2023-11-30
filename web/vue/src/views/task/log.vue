@@ -10,6 +10,11 @@
         <el-form-item label="任务ID">
           <el-input v-model.trim="searchParams.task_id"></el-input>
         </el-form-item>
+<!--        <el-form-item label="项目">-->
+<!--          <el-select v-model="searchParams.project_id" prop="project_id">-->
+<!--            <el-option v-for="project in projects" :value="project.id" :key="project.id" :label="project.name"></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
         <el-form-item label="执行方式">
           <el-select v-model.trim="searchParams.protocol" placeholder="执行方式">
             <el-option label="全部" value=""></el-option>
@@ -34,10 +39,41 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="search()">搜索</el-button>
-          <el-button type="danger" v-if="this.$store.getters.user.isAdmin" @click="clearLog">清空日志</el-button>
-          <el-button type="info" @click="refresh">刷新</el-button>
+<!--          <el-button type="danger" v-if="this.$store.getters.user.isAdmin" @click="clearLog">清空日志</el-button>-->
+<!--          <el-button type="info" @click="refresh">刷新</el-button>-->
         </el-form-item>
       </el-row>
+
+
+    <el-row type="flex" justify="end">
+      <el-col :span="3">
+        <el-button type="success" v-if="searchParams.task_id > 0"  @click="runTask(searchParams.task_id)">手动执行</el-button>
+      </el-col>
+      <el-col :span="3">
+        <el-tooltip class="item" effect="dark" content="清空日志,重置日志主键ID" placement="top-start">
+          <el-button type="danger" v-if="this.$store.getters.user.isAdmin" @click="clearLog" size="medium">清空日志</el-button>
+        </el-tooltip>
+      </el-col>
+
+      <el-col :span="4">
+        <el-button-group v-if="this.$store.getters.user.isAdmin">
+          <el-tooltip class="item" effect="dark" content="删除1天前日志" placement="top-start">
+            <el-button type="warning" size="medium" @click="removeLogDay(1)">1天</el-button>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="删除7天前日志" placement="top-start">
+            <el-button type="warning" size="medium" @click="removeLogDay(7)">7天</el-button>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="删除1月前日志" placement="top-start">
+            <el-button type="warning" size="medium" @click="removeLog(1)">1月</el-button>
+          </el-tooltip>
+        </el-button-group>
+      </el-col>
+
+      <el-col :span="2">
+        <el-button type="info" @click="refresh" size="medium">刷新</el-button>
+      </el-col>
+    </el-row>
+
     </el-form>
     <el-pagination
         background
@@ -136,6 +172,7 @@
 <script>
 import taskLogService from '../../api/taskLog'
 import format from '@/utils/format'
+import taskService from '../../api/task'
 
 export default {
   name: 'task-log',
@@ -226,6 +263,22 @@ export default {
       this.$appConfirm(() => {
         taskLogService.clear(this.searchParams, () => {
           this.searchParams.page = 1
+          // this.search()
+        })
+      })
+    },
+    removeLog (month) {
+      this.$appConfirm(() => {
+        taskLogService.remove(month,() => {
+          this.searchParams.page = 1
+          this.search()
+        })
+      })
+    },
+    removeLogDay (day) {
+      this.$appConfirm(() => {
+        taskLogService.removeDay(day,() => {
+          this.searchParams.page = 1
           this.search()
         })
       })
@@ -244,6 +297,14 @@ export default {
       this.search(() => {
         this.$message.success('刷新成功')
       })
+    },
+    runTask (taskId) {
+      this.$appConfirm(() => {
+        taskService.run(taskId, () => {
+          this.$message.success('任务已开始执行')
+          this.refresh()
+        })
+      }, true)
     }
   }
 }

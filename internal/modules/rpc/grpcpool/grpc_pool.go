@@ -2,8 +2,6 @@ package grpcpool
 
 import (
 	"context"
-	"google.golang.org/grpc/backoff"
-	"google.golang.org/grpc/credentials/insecure"
 	"strings"
 	"sync"
 	"time"
@@ -12,6 +10,8 @@ import (
 	"github.com/ouqiang/gocron/internal/modules/rpc/auth"
 	"github.com/ouqiang/gocron/internal/modules/rpc/proto"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/backoff"
+	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/keepalive"
 )
 
@@ -19,6 +19,7 @@ const (
 	backOffBaseDelay = 3 * time.Second
 	backOffMaxDelay  = 60 * time.Second
 	dialTimeout      = 2 * time.Second
+	//maxDefaultGrpcReceiveBufferSize=1024*1024*100
 )
 
 var (
@@ -104,6 +105,7 @@ func (p *GRPCPool) factory(addr string) (*Client, error) {
 			BaseDelay: backOffBaseDelay,
 			MaxDelay:  backOffMaxDelay,
 		}}),
+		//grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(maxDefaultGrpcReceiveBufferSize)),
 	}
 
 	if !app.Setting.EnableTLS {

@@ -12,6 +12,7 @@
       TaskName 任务名称
       Status 任务执行结果状态
       Result 任务执行输出
+      Remark 任务备注
     </code></pre>
   </div>
 </template>

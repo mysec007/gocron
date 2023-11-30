@@ -16,20 +16,14 @@
       </el-icon>
       <span>首页</span>
     </el-menu-item>
-    <el-sub-menu index="/project">
+    <el-menu-item index="/project/index">
       <template #title>
         <el-icon>
-          <FolderAdd/>
+          <home-filled/>
         </el-icon>
         <span>项目管理</span>
       </template>
-      <el-menu-item index="/project/index">
-        <span>项目管理</span>
-      </el-menu-item>
-      <el-menu-item index="/host/index">
-        <span>节点管理</span>
-      </el-menu-item>
-    </el-sub-menu>
+    </el-menu-item>
     <el-sub-menu index="/task">
       <template #title>
         <el-icon>
@@ -44,11 +38,19 @@
         <span>任务日志</span>
       </el-menu-item>
     </el-sub-menu>
-    <el-menu-item index="/process/index">
-      <el-icon>
-        <House/>
-      </el-icon>
-      <span>进程管理</span>
+<!--    <el-menu-item index="/process/index">-->
+<!--      <el-icon>-->
+<!--        <House/>-->
+<!--      </el-icon>-->
+<!--      <span>进程管理</span>-->
+<!--    </el-menu-item>-->
+    <el-menu-item index="/host/index">
+      <template #title>
+        <el-icon>
+          <list/>
+        </el-icon>
+        <span>节点管理</span>
+      </template>
     </el-menu-item>
     <el-menu-item index="/user/index" v-if="this.$store.getters.user.isAdmin">
       <el-icon>
@@ -80,9 +82,11 @@
 </template>
 <script>
 import systemService from "@/api/system";
+import {HomeFilled, List} from "@element-plus/icons-vue";
 
 export default {
   name: 'AsideNav',
+  components: {HomeFilled, List},
   created() {
     systemService.resetSystemSetting(this)
   }

@@ -18,6 +18,7 @@
         </el-form-item>
         <el-form-item label="项目">
           <el-select v-model="searchParams.project_id" prop="project_id">
+            <el-option label="全部" value=""></el-option>
             <el-option v-for="project in projects" :value="project.id" :key="project.id" :label="project.name"></el-option>
           </el-select>
         </el-form-item>

@@ -36,10 +36,15 @@
         border
         v-loading="loading"
         style="width: 100%">
-      <el-table-column prop="id" label="ID" width="100" align="center"/>
-      <el-table-column prop="name" label="名称"/>
+      <el-table-column prop="id" label="项目ID" width="100" align="center"/>
       <el-table-column prop="code" label="编码"/>
+      <el-table-column prop="name" label="名称"/>
       <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true"/>
+      <el-table-column label="查看任务">
+        <template v-slot="scope">
+          <el-button type="success" @click="toTasks(scope.row)">查看任务</el-button>
+        </template>
+      </el-table-column>
       <el-table-column prop="created_at" :formatter="formatDatetime" label="创建时间"/>
       <el-table-column prop="updated_at" :formatter="formatDatetime" label="更新时间"/>
       <el-table-column label="操作">
@@ -139,6 +144,16 @@ export default {
         page_size: 20,
         page: 1
       }
+    },
+    toTasks(item) {
+      this.$router.push(
+          {
+            path: '/task',
+            query: {
+              // todo 此处有bug，跳转到项目id搜索实际未生效，待解决
+              project_id: item.id
+            }
+          })
     },
     toEdit(row) {
       if (row !== null) {

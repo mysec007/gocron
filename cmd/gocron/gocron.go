@@ -9,8 +9,6 @@ import (
 	"os/signal"
 	"syscall"
 
-	"gopkg.in/macaron.v1"
-
 	"github.com/ouqiang/gocron/internal/models"
 	"github.com/ouqiang/gocron/internal/modules/app"
 	"github.com/ouqiang/gocron/internal/modules/logger"
@@ -19,10 +17,11 @@ import (
 	"github.com/ouqiang/gocron/internal/service"
 	"github.com/ouqiang/goutil"
 	"github.com/urfave/cli"
+	"gopkg.in/macaron.v1"
 )
 
 var (
-	AppVersion = "2.0.5"
+	AppVersion = "2.1.0"
 	GitCommit  string
 	BuildDate  string
 )
