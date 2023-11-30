@@ -1,8 +1,9 @@
 package models
 
 import (
-	"github.com/go-xorm/xorm"
 	"time"
+
+	"github.com/go-xorm/xorm"
 )
 
 type Project struct {
@@ -21,6 +22,13 @@ type Project struct {
 type ProjectTaskChart struct {
 	Name  string `json:"name"`
 	Value int64  `json:"value"`
+}
+
+type ChartNew struct {
+	ProjectId   int
+	ProjectName string
+	Week        string
+	Count       int
 }
 
 func (p *Project) Create() (int64, error) {

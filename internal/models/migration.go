@@ -17,7 +17,7 @@ func (migration *Migration) Install(dbName string) error {
 	task := new(Task)
 	tables := []interface{}{
 		&User{}, task, &TaskLog{}, &Host{}, setting, &LoginLog{}, &TaskHost{},
-		&OperateLog{}, &Process{}, &ProcessHost{}, &ProcessWorker{}, &Project{}, &ProjectHost{},
+		&OperateLog{}, &Project{}, &ProjectHost{},
 	}
 	for _, table := range tables {
 		exist, err := Db.IsTableExist(table)
@@ -52,7 +52,6 @@ func (migration *Migration) Upgrade(oldVersionId int) {
 		migration.upgradeFor140,
 		migration.upgradeFor150,
 		migration.upgradeFor200,
-		migration.upgradeFor203,
 	}
 
 	startIndex := -1
@@ -239,7 +238,7 @@ func (m *Migration) upgradeFor150(session *xorm.Session) error {
 	return nil
 }
 
-//升级到v2.0.0
+// 升级到v2.0.0
 func (m *Migration) upgradeFor200(session *xorm.Session) error {
 	logger.Info("开始升级到v2.0.0")
 	err := session.CreateTable(Project{})
@@ -253,21 +252,6 @@ func (m *Migration) upgradeFor200(session *xorm.Session) error {
 		return err
 	}
 	err = session.CreateTable(OperateLog{})
-	if err != nil {
-		logger.Info("升级到v2.0.0失败\n", err)
-		return err
-	}
-	err = session.CreateTable(Process{})
-	if err != nil {
-		logger.Info("升级到v2.0.0失败\n", err)
-		return err
-	}
-	err = session.CreateTable(ProcessWorker{})
-	if err != nil {
-		logger.Info("升级到v2.0.0失败\n", err)
-		return err
-	}
-	err = session.CreateTable(ProcessHost{})
 	if err != nil {
 		logger.Info("升级到v2.0.0失败\n", err)
 		return err
@@ -290,14 +274,5 @@ func (m *Migration) upgradeFor200(session *xorm.Session) error {
 	_ = s.Set("system", "title", "gocron")
 
 	logger.Info("已升级到v2.0.0\n")
-	return err
-}
-
-func (m *Migration) upgradeFor203(session *xorm.Session) error {
-	logger.Info("开始升级到v2.0.3")
-	
-	err := session.Sync2(new(ProcessWorker))
-
-	logger.Info("已升级到v2.0.3\n")
 	return err
 }

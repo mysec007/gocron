@@ -2,10 +2,11 @@ package dashboard
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/ouqiang/gocron/internal/models"
 	"github.com/ouqiang/gocron/internal/modules/utils"
 	"gopkg.in/macaron.v1"
-	"time"
 )
 
 type NewData struct {
@@ -29,9 +30,6 @@ func Index(ctx *macaron.Context) string {
 	taskCount, _ := t.Total(models.CommonMap{})
 	data.TotalGroup["taskCount"] = taskCount
 
-	process := models.Process{}
-	processCount, _ := process.Total(models.CommonMap{})
-	data.TotalGroup["processCount"] = processCount
 	u := models.User{}
 	userCount, _ := u.Total()
 	data.TotalGroup["userCount"] = userCount
@@ -56,8 +54,6 @@ func Index(ctx *macaron.Context) string {
 		data.ProjectNewX[i] = fmt.Sprintf("%d年 第%d周", year, w)
 	}
 
-	// 处理新增的进程数据
-	parseNewDataForChart(&data, times, process.GetChartDataForDashboard(times[0]), "新增进程")
 	// 处理新增的任务数据
 	parseNewDataForChart(&data, times, t.GetChartDataForDashboard(times[0]), "新增定时任务")
 
@@ -75,7 +71,7 @@ func parseNewDataForChart(data *Dashboard, times []time.Time, charts []models.Ch
 		}
 		maps[chart.ProjectId][chart.Week] = chart.Count
 	}
-	
+
 	projects[0] = "项目待定"
 
 	for projectId, m := range maps {

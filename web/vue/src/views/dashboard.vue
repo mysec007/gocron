@@ -1,6 +1,6 @@
 <template>
   <el-row :gutter="12">
-    <el-col :span="6" v-loading="loading">
+    <el-col :span="8" v-loading="loading">
       <el-card shadow="hover">
         <div class="flex justify-between">
           <div class="icon">
@@ -15,37 +15,7 @@
         </div>
       </el-card>
     </el-col>
-    <el-col :span="6" v-loading="loading">
-      <el-card shadow="hover">
-        <div class="flex justify-between">
-          <div class="icon">
-            <el-icon>
-              <House/>
-            </el-icon>
-          </div>
-          <div class="data flex justify-between">
-            <div>进程总数</div>
-            <span>{{ totalGroup.processCount }}</span>
-          </div>
-        </div>
-      </el-card>
-    </el-col>
-    <el-col :span="6" v-loading="loading">
-      <el-card shadow="hover">
-        <div class="flex justify-between">
-          <div class="icon">
-            <el-icon>
-              <User/>
-            </el-icon>
-          </div>
-          <div class="data flex justify-between">
-            <div>用户总数</div>
-            <span>{{ totalGroup.userCount }}</span>
-          </div>
-        </div>
-      </el-card>
-    </el-col>
-    <el-col :span="6" v-loading="loading">
+    <el-col :span="8" v-loading="loading">
       <el-card shadow="hover">
         <div class="flex justify-between">
           <div class="icon">
@@ -60,6 +30,22 @@
         </div>
       </el-card>
     </el-col>
+    <el-col :span="8" v-loading="loading">
+      <el-card shadow="hover">
+        <div class="flex justify-between">
+          <div class="icon">
+            <el-icon>
+              <User/>
+            </el-icon>
+          </div>
+          <div class="data flex justify-between">
+            <div>用户总数</div>
+            <span>{{ totalGroup.userCount }}</span>
+          </div>
+        </div>
+      </el-card>
+    </el-col>
+
   </el-row>
   <el-row style="margin-top: 15px" :gutter="12">
     <el-col :span="10" v-loading="loading">
