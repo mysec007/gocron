@@ -22,7 +22,6 @@ import (
 	"github.com/ouqiang/gocron/internal/routers/install"
 	"github.com/ouqiang/gocron/internal/routers/loginlog"
 	"github.com/ouqiang/gocron/internal/routers/manage"
-	"github.com/ouqiang/gocron/internal/routers/process"
 	"github.com/ouqiang/gocron/internal/routers/project"
 	"github.com/ouqiang/gocron/internal/routers/task"
 	"github.com/ouqiang/gocron/internal/routers/tasklog"
@@ -98,18 +97,6 @@ func Register(m *macaron.Macaron) {
 		m.Post("/enable/:id", task.Enable)
 		m.Post("/disable/:id", task.Disable)
 		m.Get("/run/:id", task.Run)
-	})
-
-	// 进程管理
-	m.Group("/process", func() {
-		m.Get("", process.Index)
-		m.Post("/store", binding.Bind(process.Form{}), process.Store)
-		m.Get("/:id", process.Get)
-		m.Post("/start/:id", process.Start)
-		m.Post("/stop/:id", process.Stop)
-		m.Post("/enable/:id", process.Enable)
-		m.Post("/disable/:id", process.Disable)
-		m.Post("/restart/:id", process.Restart)
 	})
 
 	m.Group("/project", func() {

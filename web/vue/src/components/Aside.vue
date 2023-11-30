@@ -38,12 +38,6 @@
         <span>任务日志</span>
       </el-menu-item>
     </el-sub-menu>
-<!--    <el-menu-item index="/process/index">-->
-<!--      <el-icon>-->
-<!--        <House/>-->
-<!--      </el-icon>-->
-<!--      <span>进程管理</span>-->
-<!--    </el-menu-item>-->
     <el-menu-item index="/host/index">
       <template #title>
         <el-icon>

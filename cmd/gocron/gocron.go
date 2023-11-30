@@ -108,8 +108,6 @@ func initModule() {
 
 	// 初始化定时任务
 	service.TaskService.Initialize()
-
-	service.ProcessService.Initialize()
 }
 
 // 解析端口

@@ -37,21 +37,6 @@ const router = createRouter({
             component: () => import('@/views/task/log')
         },
         {
-            path: '/process/create',
-            name: '进程创建',
-            component: () => import('@/views/process/edit')
-        },
-        {
-            path: '/process/edit/:id',
-            name:'进程编辑',
-            component: () => import('@/views/process/edit')
-        },
-        {
-            path: '/process/index',
-            name:'进程管理',
-            component: () => import('@/views/process/list')
-        },
-        {
             path: '/host/index',
             name:'任务节点',
             component: () => import('@/views/host/list')
