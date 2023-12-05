@@ -13,7 +13,7 @@ CREATE_RESPONSE=$(curl \
   -X POST \
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: token ${GITHUB_TOKEN}" \
-  https://api.github.com/repos/peng49/gocron/releases \
+  https://api.github.com/repos/peng49/gocron/TC-deploy \
   -d "{\"tag_name\":\"${last_tag}\",\"target_commitish\":\"master\",\"name\":\"${last_tag}\",\"body\":\"描述\",\"draft\":false,\"prerelease\":false,\"generate_release_notes\":false}")
 
 echo "$CREATE_RESPONSE"

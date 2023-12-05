@@ -48,3 +48,8 @@ package-lock.json
 
 node_modules
 go.sum
+!/web/vue/dist/
+!/bin/
+!/web/vue/node_modules/
+!/web/public/
+!/log/

@@ -34,3 +34,4 @@ EXPOSE 5920
 USER app
 
 ENTRYPOINT ["/app/gocron", "web"]
+
